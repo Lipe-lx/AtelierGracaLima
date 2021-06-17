@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="br.com.dominio.ateliergracalima">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AtelierGracaLima">
+
+        <activity android:name=".MainActivity"> //onde escolhemos a activity a ser iniciada
+            <intent-filter> // filtro de intenção - dentro da tag ficam os lançamentos da activity
+                <action android:name="android.intent.action.MAIN"/> // para tornar a activity principal
+                <category android:name="android.intent.category.LAUNCHER" /> // para lançar a activity
+            </intent-filter>
+
+        </activity>
+
+
+
+    </application>
+
+</manifest>
