@@ -2,7 +2,7 @@ package br.com.dominio.ateliergracalima.modelo
 
 import java.math.BigDecimal
 
-class Produto(
+data class Produto(
     val nomeVaso: String,
     val colecao: String,
     val descricao: String,
