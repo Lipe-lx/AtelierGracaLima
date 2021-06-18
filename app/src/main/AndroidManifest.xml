@@ -9,16 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AtelierGracaLima">
-
-        <activity android:name=".MainActivity"> //onde escolhemos a activity a ser iniciada
-            <intent-filter> // filtro de intenção - dentro da tag ficam os lançamentos da activity
-                <action android:name="android.intent.action.MAIN"/> // para tornar a activity principal
-                <category android:name="android.intent.category.LAUNCHER" /> // para lançar a activity
+        <activity android:name=".ui.activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity android:name=".ui.activity.FormularioProdutoActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 
