@@ -1,52 +1,40 @@
 package br.com.dominio.ateliergracalima.ui.activity
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import br.com.dominio.ateliergracalima.R
+import br.com.dominio.ateliergracalima.dao.ProdutosDao
 import br.com.dominio.ateliergracalima.modelo.Produto
 import br.com.dominio.ateliergracalima.ui.recyclerview.adapter.ListaProdutosAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.math.BigDecimal
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) { //AppCompatActivity chamando as views dentro do package layout
 
-    override fun onCreate(savedInstanceState: Bundle?) { //Para o Android nao temos o metodo main e através da super class Activity, neste caso a AppCompatActivity, inicializamos os processos
-        super.onCreate(savedInstanceState)
-        Toast.makeText(this, "Bem vindo(a) ao Atelier Graça Lima!", Toast.LENGTH_SHORT).show() //AppCompatActivity é o context por tanto o "this" é a referencia
-        setContentView(R.layout.activity_main) //setContentView - Chama as views do package "res" - resource
+    override fun onCreate(savedInstanceState: Bundle?) { //onCreate - executa o codigo abaixo sempre que a Activity for inicializada
+        super.onCreate(savedInstanceState) //Para o Android nao temos o metodo main e através da super class Activity, neste caso a AppCompatActivity, inicializamos os processos
+        Toast.makeText(this, "Bem vindo(a) ao Atelier Graça Lima!", Toast.LENGTH_SHORT) //Apresentar uma mensagem de boas vindas ao criar a Activity.
+            .show() //AppCompatActivity é o context por tanto o "this" é a referencia
+    }
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView) //Chama o recyclerView
-        recyclerView.adapter = ListaProdutosAdapter(this, listOf(
-                Produto(
-                    nomeVaso = "Estilo Gota",
-                    colecao = "Harmonia e Equilíbrio",
-                    descricao = "Tamanho Médio: 80x30cm",
-                    valor = BigDecimal("235.00")
-                ),
-                Produto(
-                    nomeVaso = "Estilo Cone",
-                    colecao = "Harmonia e Equilíbrio",
-                    descricao = "Tamanho Médio: 70x30cm",
-                    valor = BigDecimal("205.00")
-                ),
-                Produto(
-                    nomeVaso = "Triangular Reto",
-                    colecao = "Harmonia e Equilíbrio",
-                    descricao = "Tamanho Médio: 80x30cm",
-                    valor = BigDecimal("255.00")
-                ),
-                Produto(
-                    nomeVaso = "Estilo Sino",
-                    colecao = "Harmonia e Equilíbrio",
-                    descricao = "Tamanho Grande: 85x40cm",
-                    valor = BigDecimal("335.00")
-                ),
-            )
-        )
+    override fun onResume() { // onResume - executa o codigo abaixo sempre quando houver iteração do usuario na activity
+        super.onResume()
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView) //findViewById - Chama o recyclerView que é uma ViewGroup com varios métodos
+        val dao = ProdutosDao()
+        recyclerView.adapter = ListaProdutosAdapter(context = this, produtos = dao.buscaTodos() ) //Carrega os produtos apartir da metodo busca todos implementado para buscar a lista em ProdutosDao
+        val fab = findViewById<FloatingActionButton>(R.id.floatingActionButton) // logica no botão de adicionar - setOnClickListener aciona o codigo ao clicar
+        fab.setOnClickListener {
+            val intent = Intent(this, FormularioProdutoActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
+}
 
 //        val nomeVaso = findViewById<TextView>(R.id.nomeVaso) //Busca uma view, no caso uma TextView, atraves de seu ID
 //        nomeVaso.text = "Tipo Cone" //modifica o texto
@@ -56,6 +44,4 @@ class MainActivity : AppCompatActivity() {
 //        descricao.text = "Tamanho Médio - 80x30cm"
 //        val valor = findViewById<TextView>(R.id.valor)
 //        valor.text = "R$ 230,00"
-    }
 
-}

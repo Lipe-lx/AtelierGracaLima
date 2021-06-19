@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import br.com.dominio.ateliergracalima.R
+import br.com.dominio.ateliergracalima.dao.ProdutosDao
 import br.com.dominio.ateliergracalima.modelo.Produto
 import java.math.BigDecimal
 
@@ -15,10 +16,8 @@ class FormularioProdutoActivity :
     AppCompatActivity(R.layout.activity_formulario_produto) { // AppCompatActivity compatibiliza para todas as versoes do Android e pode chamar diretamente o layout pelo construtor
 
     override fun onCreate( // toda vez que for criada a activity rodara esse codigo
-        savedInstanceState: Bundle?,
-        persistentState: PersistableBundle?
-    ) {
-        super.onCreate(savedInstanceState, persistentState)
+        savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         val botaoSalvar =
             findViewById<Button>(R.id.botao_salvar) //Pega as informações quando o botao salvar é clickado
@@ -33,8 +32,7 @@ class FormularioProdutoActivity :
             val descricao = campoDescricao.text.toString()
 
             val campoValor = findViewById<EditText>(R.id.valor)
-            val valorEmTexto =
-                campoValor.text.toString() //Para nao ter erro de conversão é necessario realizar uma verificação.
+            val valorEmTexto = campoValor.text.toString() //Para nao ter erro de conversão é necessario realizar uma verificação.
             val valor = if (valorEmTexto.isBlank()) {
                 BigDecimal.ZERO
             } else {
@@ -49,6 +47,13 @@ class FormularioProdutoActivity :
             )
 
             Log.i("FormularioProduto", "onCreate: $produtoNovo ")
+
+            val dao = ProdutosDao() //Integração do DAO com a activity - DAO é aonde vai ficar armazenadas as informações - classe ProdutosDao
+            dao.adiciona(produtoNovo)
+
+            Log.i("FormularioProduto", "onCreate: ${dao.buscaTodos()} ")
+
+            finish()
 
         }
 
