@@ -11,19 +11,21 @@ import br.com.dominio.ateliergracalima.modelo.Produto
 
 class ListaProdutosAdapter(
     private val context: Context, //Pede o contexto como parametro do construtor para o LayoutInflater
-    private val produtos: List<Produto>
+    produtos: List<Produto>
 ) : RecyclerView.Adapter<ListaProdutosAdapter.ViewHolder>() { //RecyclerView - Em situações que precisamos apresentar uma mesma View com informações diferentes, como é o caso de uma lista de produtos, podemos utilizar o RecyclerView.
+
+    private val produtos = produtos.toMutableList() //Lista modificavel para realizar as atualizações do adapter - para a fun atualizaLista
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun vincula(produto: Produto) { // Processo de vinculação das Views
-            val nomeVaso = itemView.findViewById<TextView>(R.id.nomeVaso) //itemView representa o layout que transformamos em uma view e mandamos para a viewHolder
+            val nomeVaso = itemView.findViewById<TextView>(R.id.produto_iten_nome_vaso) //itemView representa o layout que transformamos em uma view e mandamos para a viewHolder
             nomeVaso.text = produto.nomeVaso
-            val colecao = itemView.findViewById<TextView>(R.id.colecao)
+            val colecao = itemView.findViewById<TextView>(R.id.produto_iten_colecao)
             colecao.text = produto.colecao
-            val descricao = itemView.findViewById<TextView>(R.id.descricao)
+            val descricao = itemView.findViewById<TextView>(R.id.produto_iten_descricao)
             descricao.text = produto.descricao
-            val valor = itemView.findViewById<TextView>(R.id.valor)
+            val valor = itemView.findViewById<TextView>(R.id.produto_iten_valor)
             valor.text = produto.valor.toPlainString() // .toPlainString() para transformar o bigDecimal em uma String
         }
     }
@@ -41,6 +43,12 @@ class ListaProdutosAdapter(
 
     override fun getItemCount(): Int { //Quantos itens vai apresentar dentro do adapter
         return produtos.size
+    }
+
+    fun atualizaLista(produtos: List<Produto>) {
+        this.produtos.clear()
+        this.produtos.addAll(produtos)
+        notifyDataSetChanged()
     }
 
 }

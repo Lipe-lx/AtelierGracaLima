@@ -2,9 +2,7 @@ package br.com.dominio.ateliergracalima.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import br.com.dominio.ateliergracalima.R
@@ -19,44 +17,48 @@ class FormularioProdutoActivity :
         savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val botaoSalvar =
-            findViewById<Button>(R.id.botao_salvar) //Pega as informações quando o botao salvar é clickado
+        configuraBotaoSalvar()
+
+    }
+
+    private fun configuraBotaoSalvar() {
+        val botaoSalvar = findViewById<Button>(R.id.activity_formulario_produto_botao_salvar) //findViewById busca o botão pelo seu id no layout //.setOnClickListener Pega as informações quando o botao salvar é clickado
+        val dao = ProdutosDao() //Integração do DAO com a activity - DAO (base de dados) é aonde vai ficar armazenadas as informações - classe ProdutosDao
         botaoSalvar.setOnClickListener {
-            val campoNome = findViewById<EditText>(R.id.nomeVaso)
-            val nome = campoNome.text.toString() //Pega as informações inseridas pelo usuario
-
-            val campoColecao = findViewById<EditText>(R.id.colecao)
-            val colecao = campoColecao.text.toString()
-
-            val campoDescricao = findViewById<EditText>(R.id.descricao)
-            val descricao = campoDescricao.text.toString()
-
-            val campoValor = findViewById<EditText>(R.id.valor)
-            val valorEmTexto = campoValor.text.toString() //Para nao ter erro de conversão é necessario realizar uma verificação.
-            val valor = if (valorEmTexto.isBlank()) {
-                BigDecimal.ZERO
-            } else {
-                BigDecimal(valorEmTexto)
-            }
-
-            val produtoNovo = Produto(
-                nomeVaso = nome,
-                colecao = colecao,
-                descricao = descricao,
-                valor = valor
-            )
-
-            Log.i("FormularioProduto", "onCreate: $produtoNovo ")
-
-            val dao = ProdutosDao() //Integração do DAO com a activity - DAO é aonde vai ficar armazenadas as informações - classe ProdutosDao
+            val produtoNovo = criaProduto()
+            Log.i("FormularioProduto", "onCreate: $produtoNovo ") // verificação no Logcat
             dao.adiciona(produtoNovo)
-
-            Log.i("FormularioProduto", "onCreate: ${dao.buscaTodos()} ")
-
+            Log.i("FormularioProduto", "onCreate: ${dao.buscaTodos()} ") // verificação no Logcat
             finish()
+        }
+    }
 
+    private fun criaProduto(): Produto {
+        val campoNome = findViewById<EditText>(R.id.activity_formulario_produto_nome_vaso)
+        val nome =
+            campoNome.text.toString() //.text é sinonimo de getText() - Pega as informações inseridas pelo usuario.
+
+        val campoColecao = findViewById<EditText>(R.id.activity_formulario_produto_colecao)
+        val colecao = campoColecao.text.toString()
+
+        val campoDescricao = findViewById<EditText>(R.id.activity_formulario_produto_descricao)
+        val descricao = campoDescricao.text.toString()
+
+        val campoValor = findViewById<EditText>(R.id.activity_formulario_produto_valor)
+        val valorEmTexto =
+            campoValor.text.toString() //Para nao ter erro de conversão é necessario realizar uma verificação por conta do BigDecimal, unidade para calculos monetários.
+        val valor = if (valorEmTexto.isBlank()) {
+            BigDecimal.ZERO
+        } else {
+            BigDecimal(valorEmTexto)
         }
 
+        return Produto(
+            nomeVaso = nome,
+            colecao = colecao,
+            descricao = descricao,
+            valor = valor
+        )
     }
 
 }
